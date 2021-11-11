@@ -1,30 +1,8 @@
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
-from pprint import pprint
-
-from googleapiclient.http import MediaIoBaseDownload
-from menus import *
-
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-SERVICE_ACCOUNT_FILE = 'key.json'
-
-creds = None
-creds = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-# The ID and range of a sample spreadsheet.
-id = '1cTg4QyIFSBJeQjuXk8dgJTTMpyGtzIPvkdz5Sd0wyhM'
-service = build('sheets', 'v4', credentials=creds)
-
-# Call the Sheets API
-sheet = service.spreadsheets()
-mains = sheet.values().get(spreadsheetId=id, range="mains!A1:C999").execute()
-values = mains.get('values', [])
-print('   WELCOME !!!   ')
 
 
 def account():
-    i = len(values) + 1
     have = input('Do you have an account ? (yes/no) \n').lower().strip()
     if have == 'yes':
         print('Please choose type of your account: \n 1)Director \n 2)Manager \n 3)Marketing \n 4)Worker')
@@ -101,11 +79,11 @@ def account():
             print('YOU ARE IN WORKER ACCOUNT! \n')
             for i in range(3):
                 work_login = input('Enter username >>> ').lower().strip()
-                if [work_login] in sheet.values().get(spreadsheetId=id, range="worker!A2:A999".format(i)).execute().get('values', []):
+                if work_login in sheet.values().get(spreadsheetId=id, range="worker!A5").execute().get('values', [])[0]:
                     for j in range(3):
                         worker_password = input(
                             'Enter password >>> ').lower().strip()
-                        if [worker_password] in sheet.values().get(spreadsheetId=id, range="worker!B2:B99".format(i)).execute().get('values', []):
+                        if worker_password in sheet.values().get(spreadsheetId=id, range="worker!B5").execute().get('values', [])[0]:
                             worker_menu()
                             break
                         else:
@@ -125,17 +103,17 @@ def account():
                     ' >>> SORRY, BUT WE DID NOT FIND THIS TYPE OF ACCOUNT, PLEASE TRY AGAIN. <<< \n')
                 account()
     elif have == 'no':
-        print('Then you should sign up as worker')
-        n, s = input().strip(), input().strip()
-        l = [n, s]
+        print('Then you should sign up')
+        print('1)Worker')
+        n = input().strip()
+        s = input().strip()
+        i = len(values) + 1
+        l = list(n, s)
         q = [l]
         print(q)
-        sheet.values().update(spreadsheetId=id, range="worker!A{}".format(
+        send = sheet.values().update(spreadsheetId=id, range="mains!A{}".format(
             i), valueInputOption="USER_ENTERED", body={'values': [l]}).execute()
-        print('Congratulations. You have successfully signed in !!! \n')
+        print('Congratulations. You have successfully signed in !!!')
     else:
         print('Please try again!!!')
         account()
-
-
-account()
