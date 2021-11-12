@@ -106,6 +106,8 @@ def account():
                         worker_password = input(
                             'Enter password >>> ').lower().strip()
                         if [worker_password] in sheet.values().get(spreadsheetId=id, range="worker!B2:B99".format(i)).execute().get('values', []):
+                            print(' \n YOU ARE WELCOME {}!!! \n '.format(
+                                work_login.upper()))
                             worker_menu()
                             break
                         else:
@@ -128,8 +130,6 @@ def account():
         print('Then you should sign up as worker')
         n, s = input().strip(), input().strip()
         l = [n, s]
-        q = [l]
-        print(q)
         sheet.values().update(spreadsheetId=id, range="worker!A{}".format(
             i), valueInputOption="USER_ENTERED", body={'values': [l]}).execute()
         print('Congratulations. You have successfully signed in !!! \n')

@@ -79,7 +79,9 @@ def marketer_menu():
 
 
 def worker_menu():
-    print(' \n YOU ARE WELCOME WORKER !!! \n ')
+    f = open('tasks.txt', 'r')
+    q = f.read()
+    print(q)
     print('1) Show a list of tasks assigned to me ')
     # 1) Показывает список порученных дел для этого сотрудника из файла “tasks.txt”
     print('2) Complete the case:')
