@@ -19,12 +19,14 @@ service = build('sheets', 'v4', credentials=creds)
 # Call the Sheets API
 sheet = service.spreadsheets()
 mains = sheet.values().get(spreadsheetId=id, range="mains!A1:C999").execute()
-values = mains.get('values', [])
+worker = sheet.values().get(spreadsheetId=id, range="worker!A1:C999").execute()
+values_mains = mains.get('values', [])
+values_worker = worker.get('values', [])
 print('   WELCOME !!!   ')
 
 
 def account():
-    i = len(values) + 1
+    i = len(values_worker) + 1
     have = input('Do you have an account ? (yes/no) \n').lower().strip()
     if have == 'yes':
         print('Please choose type of your account: \n 1)Director \n 2)Manager \n 3)Marketing \n 4)Worker')
@@ -74,7 +76,6 @@ def account():
                         print('Try again!!!')
                     else:
                         print('You have wasted all username attempts!!!')
-
         elif a == 3:
             print('YOU ARE IN MARKETER ACCOUNT TYPE! \n')
             for i in range(3):
@@ -101,24 +102,28 @@ def account():
             print('YOU ARE IN WORKER ACCOUNT! \n')
             for i in range(3):
                 work_login = input('Enter username >>> ').lower().strip()
-                if [work_login] in sheet.values().get(spreadsheetId=id, range="worker!A2:A999".format(i)).execute().get('values', []):
-                    for j in range(3):
-                        worker_password = input(
-                            'Enter password >>> ').lower().strip()
-                        if [worker_password] in sheet.values().get(spreadsheetId=id, range="worker!B2:B99".format(i)).execute().get('values', []):
-                            worker_menu()
+                if [work_login] in sheet.values().get(spreadsheetId=id, range="worker!A2:A999").execute().get('values', []):
+                    for check in sheet.values().get(spreadsheetId=id, range="worker!A2:B999").execute().get('values', []):
+                        if work_login == check[0]:
+                            for j in range(3):
+                                worker_password = input('Enter password >>> ').lower().strip()
+                                if worker_password == check[1]:
+                                    worker_menu()
+                                    break
+                                else:
+                                    if j != 2:
+                                        print('\nWrong password')
+                                        print('Try again!!!\n')
+                                    else:
+                                        print('\nYou have wasted all password attempts!!!')
                             break
-                        else:
-                            if j != 2:
-                                print('Try again!!!')
-                            else:
-                                print('You have wasted all password attempts!!!')
                     break
                 else:
                     if i != 2:
-                        print('Try again!!!')
+                        print('\nWe have not find account with this username!!!')
+                        print('Try again!!!\n')
                     else:
-                        print('You have wasted all username attempts!!!')
+                        print('\nYou have wasted all username attempts!!!')
         else:
             if a != 0:
                 print(
@@ -126,7 +131,7 @@ def account():
                 account()
     elif have == 'no':
         print('Then you should sign up as worker')
-        n, s = input().strip(), input().strip()
+        n, s = input().strip().lower(), input().strip().lower()
         l = [n, s]
         q = [l]
         print(q)
