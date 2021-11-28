@@ -10,32 +10,16 @@ creds = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
 # The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1cTg4QyIFSBJeQjuXk8dgJTTMpyGtzIPvkdz5Sd0wyhM'
+id = '1cTg4QyIFSBJeQjuXk8dgJTTMpyGtzIPvkdz5Sd0wyhM'
 service = build('sheets', 'v4', credentials=creds)
 
 # Call the Sheets API
-a = [['Username', 'Password'], ['user-director', 'coolman'], ['user-manager',
-                                                              'manager'], ['user-marketing', 'marketer'], ["user-worker", 'worker']]
 sheet = service.spreadsheets()
-show = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                          range="Register!A1:C999").execute()
-# send = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="Register!A1", valueInputOption="USER_ENTERED", body={'values':a}).execute()
-values = show.get('values', [])
-print(len(values))
-l = []
-n = input()
-s = input()
-if True:
-    i = len(values) + 1
-    l.append(n)
-    l.append(s)
-    q = [l]
-    print(q)
-    send = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="Register!A{}".format(
-        i), valueInputOption="USER_ENTERED", body={'values': q}).execute()
-else:
-    print("You are wrong!")
-print('Welcome!!!')
+mains = sheet.values().get(spreadsheetId=id, range="mains!A1:C999").execute()
+worker = sheet.values().get(spreadsheetId=id, range="worker!A1:C999").execute()
+values_mains = mains.get('values', [])
+values_worker = worker.get('values', [])
+i = len(values_worker) + 1
 
 
 def director_menu():
@@ -95,7 +79,7 @@ def manager_menu():
 
 
 def marketer_menu():
-    print(' \n YOU ARE WELCOME MARKETER !!! \n ')
+
     print('1) Show a list of all customer coverage areas by district ')
     # 1) Показывает количество людей - клиентов данной организации из файла «clients.txt»
     print('2) Show a list of categories for marketing')
@@ -118,8 +102,7 @@ def marketer_menu():
         print(' \nThe program is over, we look forward to your return! \n ')
 
 
-def worker_menu():
-    print(' \n YOU ARE WELCOME WORKER !!! \n ')
+def worker_menu(name):
     print('1) Show a list of tasks assigned to me ')
     # 1) Показывает список порученных дел для этого сотрудника из файла “tasks.txt”
     print('2) Complete the case:')
@@ -133,118 +116,67 @@ def worker_menu():
     # 4) Показывается текущая зарплата для этого сотрудника из файла “salary.txt”
     print('5) Exit')
     # 5) Выход
+    print(name.upper())
     menu = int(input(
         ' \nPlease dial the menu number to work with the program, if finished, then dial 5: '))
-    if menu <= 0 or menu > 5:
+    if menu == 1:
+        print()
+        f = open('tasks.txt', 'r')
+        print(f.read())
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nWORKER MENU\n')
+            worker_menu()
+    elif menu == 2:
+        task = open('tasks.txt')
+        print()
+        print(task.read().strip())
+        task.close()
+        print('Please type the FIRST WORD of the work to COMPLETE\n')
+        q = input()
+        uncompleted = []
+        completed = ['Done by {}: '.format(name.upper())]
+        task = open('tasks.txt')
+        for i in task:
+            if i.split()[0] == q:
+                completed.append(i)
+            else:
+                uncompleted.append(i)
+        task.close()
+        task = open("tasks.txt", 'w')
+        task.writelines(uncompleted[:])
+        task.close()
+        complete = open('completed.txt', 'a')
+        complete.writelines(completed[:])
+        complete.close()
+
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nWORKER MENU\n')
+            worker_menu(name)
+    elif menu == 3:
+        complete = open('completed.txt')
+        print()
+        for f in complete:
+            if name.upper() in f:
+                print(f, end='')
+        print()
+        complete.close()
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nWORKER MENU\n')
+            worker_menu(name)
+    elif menu == 4:
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nWORKER MENU\n')
+            worker_menu(name)
+    elif menu <= 0 or menu > 5:
         print(' \n >>> YOU ENTER A NUMBER THAT IS NOT IN THE MENU, PLEASE TRY AGAIN!!! <<< \n ')
-        worker_menu()
+        worker_menu(name)
     elif menu == 5:
         print(' \nThe program is over, we look forward to your return! \n ')
-
-
-def account():
-    have = input('Do you have an account ? (yes/no) \n').lower()
-    if have == 'yes':
-        print('Please choose type of your account: \n 1)Director \n 2)Manager \n 3)Marketing \n 4)Worker')
-        a = int(input('Please enter a number (1-4) to log in, (0) to exit >>> '))
-        print('')
-        if a == 1:
-            print('YOU ARE IN DIRECTOR ACCOUNT! \n')
-            for i in range(3):
-                direc_login = input('Enter username >>> ').lower()
-                if direc_login == 'user-director':
-                    for j in range(3):
-                        direc_password = input('Enter password >>> ').lower()
-                        if direc_password == 'coolman':
-                            director_menu()
-                            break
-                        else:
-                            if j != 2:
-                                print('Try again!!!')
-                            else:
-                                print('You have wasted all password attempts!!!')
-                    break
-                else:
-                    if i != 2:
-                        print('Try again!!!')
-                    else:
-                        print('You have wasted all username attempts!!!')
-        elif a == 2:
-            print('YOU ARE IN MANAGER ACCOUNT! \n')
-            for i in range(3):
-                manager_login = input('Enter username >>> ').lower()
-                if manager_login == 'user-manager':
-                    for j in range(3):
-                        mana_password = input('Enter password >>> ').lower()
-                        if mana_password == 'manager':
-                            manager_menu()
-                            break
-                        else:
-                            if j != 2:
-                                print('Try again!!!')
-                            else:
-                                print('You have wasted all password attempts!!!')
-                    break
-                else:
-                    if i != 2:
-                        print('Try again!!!')
-                    else:
-                        print('You have wasted all username attempts!!!')
-
-        elif a == 3:
-            print('YOU ARE IN MARKETER ACCOUNT TYPE! \n')
-            for i in range(3):
-                market_login = input('Enter username >>> ').lower()
-                if market_login == 'user-marketing':
-                    for j in range(3):
-                        marketing_password = input(
-                            'Enter password >>> ').lower()
-                        if marketing_password == 'marketer':
-                            marketer_menu()
-                            break
-                        else:
-                            if j != 2:
-                                print('Try again!!!')
-                            else:
-                                print('You have wasted all password attempts!!!')
-                    break
-                else:
-                    if i != 2:
-                        print('Try again!!!')
-                    else:
-                        print('You have wasted all username attempts!!!')
-        elif a == 4:
-            print('YOU ARE IN WORKER ACCOUNT! \n')
-            for i in range(3):
-                work_login = input('Enter username >>> ').lower()
-                if work_login == 'user-worker':
-                    for j in range(3):
-                        worker_password = input('Enter password >>> ').lower()
-                        if worker_password == 'worker':
-                            worker_menu()
-                            break
-                        else:
-                            if j != 2:
-                                print('Try again!!!')
-                            else:
-                                print('You have wasted all password attempts!!!')
-                    break
-                else:
-                    if i != 2:
-                        print('Try again!!!')
-                    else:
-                        print('You have wasted all username attempts!!!')
-        else:
-            if a != 0:
-                print(
-                    ' >>> SORRY, BUT WE DID NOT FIND THIS TYPE OF ACCOUNT, PLEASE TRY AGAIN. <<< \n')
-                account()
-    elif have == 'no':
-        print('Then you should sign up')
-
-    else:
-        print('Please try again!!!')
-        account()
-
-
-account()
