@@ -1,6 +1,7 @@
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from pprint import pprint
+import datetime
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SERVICE_ACCOUNT_FILE = 'key.json'
@@ -116,7 +117,6 @@ def worker_menu(name):
     # 4) Показывается текущая зарплата для этого сотрудника из файла “salary.txt”
     print('5) Exit')
     # 5) Выход
-    print(name.upper())
     menu = int(input(
         ' \nPlease dial the menu number to work with the program, if finished, then dial 5: '))
     if menu == 1:
@@ -127,12 +127,13 @@ def worker_menu(name):
             print()
         else:
             print('\nWORKER MENU\n')
-            worker_menu()
+            worker_menu(name)
     elif menu == 2:
         task = open('tasks.txt')
         print()
         print(task.read().strip())
         task.close()
+        print()
         print('Please type the FIRST WORD of the work to COMPLETE\n')
         q = input()
         uncompleted = []
@@ -140,15 +141,18 @@ def worker_menu(name):
         task = open('tasks.txt')
         for i in task:
             if i.split()[0] == q:
-                completed.append(i)
+                completed.append(i[:-1])
+                print(completed)
             else:
                 uncompleted.append(i)
         task.close()
+        completed.append(' >>> at {}\n'.format(datetime.datetime.now()))
         task = open("tasks.txt", 'w')
         task.writelines(uncompleted[:])
         task.close()
         complete = open('completed.txt', 'a')
-        complete.writelines(completed[:])
+        if len(completed) > 2:
+            complete.writelines(completed[:])
         complete.close()
 
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
@@ -170,6 +174,7 @@ def worker_menu(name):
             print('\nWORKER MENU\n')
             worker_menu(name)
     elif menu == 4:
+
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()
         else:
