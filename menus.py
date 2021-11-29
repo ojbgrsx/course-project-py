@@ -1,26 +1,6 @@
-from googleapiclient.discovery import build
-from google.oauth2 import service_account
-from pprint import pprint
-import datetime
+from google_api import *
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-SERVICE_ACCOUNT_FILE = 'key.json'
-
-creds = None
-creds = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-# The ID and range of a sample spreadsheet.
-id = '1cTg4QyIFSBJeQjuXk8dgJTTMpyGtzIPvkdz5Sd0wyhM'
-service = build('sheets', 'v4', credentials=creds)
-
-# Call the Sheets API
-sheet = service.spreadsheets()
-mains = sheet.values().get(spreadsheetId=id, range="mains!A1:C999").execute()
-worker = sheet.values().get(spreadsheetId=id, range="worker!A1:C999").execute()
-values_mains = mains.get('values', [])
-values_worker = worker.get('values', [])
-i = len(values_worker) + 1
+i = len(values_worker_with_username) + 1
 
 
 def director_menu():
@@ -56,7 +36,6 @@ def director_menu():
 def manager_menu():
     print(' \n YOU ARE WELCOME MANAGER !!! \n ')
     print('1) Show list of employees ')
-    # 1) Показывает список всех сотрудников
     print('2) Show to-do list ')
     # 2) Показывает список всех дел, которую необходимо выполнить
     print('3) Show a list of instructions to employees ')
@@ -75,6 +54,68 @@ def manager_menu():
     if menu <= 0 or menu > 7:
         print(' \n >>> YOU ENTER A NUMBER THAT IS NOT IN THE MENU, PLEASE TRY AGAIN!!! <<< \n ')
         manager_menu()
+    elif menu == 1:
+        print()
+        show_workers = open('workers.txt', encoding="utf-8")
+        print(show_workers.read())
+        show_workers.close()
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nMANAGER MENU\n')
+            manager_menu()
+    elif menu == 2:
+
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nMANAGER MENU\n')
+            manager_menu()
+    elif menu == 3:
+
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nMANAGER MENU\n')
+            manager_menu()
+    elif menu == 4:
+
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nMANAGER MENU\n')
+            manager_menu()
+    elif menu == 5:
+
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nMANAGER MENU\n')
+            manager_menu()
+    elif menu == 6:
+        show_workers = open('workers.txt', encoding="utf-8")
+        print(show_workers.read())
+        worker_name = input("Worker\'s name:>>> ").lower()
+        s = ''
+
+        if worker_name in (i[0] for i in values_worker):
+            show_workers.close()
+            worker_task = input("Worker\'s task:>>> ").lower()
+            task = open('tasks.txt', 'a', encoding='utf-8')
+            s = 'Work for {}'.format(worker_name.upper()) + \
+                ': ' + worker_task + ' >>> ' + \
+                str(datetime.datetime.now()) + '\n'
+            task.writelines(s)
+            task.close()
+        else:
+            show_workers.close()
+            print('We could not find account with the username {}'.format(
+                worker_name.upper()))
+        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+            print()
+        else:
+            print('\nMANAGER MENU\n')
+            manager_menu()
     elif menu == 7:
         print(' \nThe program is over, we look forward to your return! \n ')
 
@@ -105,7 +146,6 @@ def marketer_menu():
 
 def worker_menu(name):
     print('1) Show a list of tasks assigned to me ')
-    # 1) Показывает список порученных дел для этого сотрудника из файла “tasks.txt”
     print('2) Complete the case:')
     # 2) Здесь пишется название дела, которую собирается выполнить сотрудник.
     # После того, как сотрудник ввел название дело, которую сотрудник хочет выполнить,
