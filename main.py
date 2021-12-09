@@ -43,7 +43,7 @@ def account():
     have = input('Do you have an account ? (yes/no) >>> ').lower().strip()
     print()
     if have == 'yes':
-        print('Please choose type of your account: \n 1)Director \n 2)Manager \n 3)Marketing \n 4)Worker \n')
+        print('Please choose type of your account: \n\n 1)Director \n 2)Manager \n 3)Marketing \n 4)Worker \n')
         a = int(input('Please enter a number (1-4) to log in, (0) to exit >>> '))
         print('')
         if a == 1:

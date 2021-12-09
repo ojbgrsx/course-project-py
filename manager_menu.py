@@ -40,7 +40,10 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 3:
-
+        print()
+        task = open('tasks.txt')
+        print(task.read())
+        task.close()
         if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:

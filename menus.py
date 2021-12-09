@@ -65,14 +65,20 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 2:
-
+        task = open('tasks.txt', encoding='utf-8')
+        print()
+        print(task.read())
+        print()
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()
         else:
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 3:
-
+        print()
+        task = open('tasks.txt')
+        print(task.read())
+        task.close()
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()
         else:
@@ -93,6 +99,7 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 6:
+        print()
         show_workers = open('workers.txt', encoding="utf-8")
         print(show_workers.read())
         worker_name = input("Worker\'s name:>>> ").lower()
@@ -103,7 +110,7 @@ def manager_menu():
             worker_task = input("Worker\'s task:>>> ").lower()
             task = open('tasks.txt', 'a', encoding='utf-8')
             s = 'Work for {}'.format(worker_name.upper()) + \
-                ': ' + worker_task + ' >>> ' + \
+                ' : ' + worker_task + ' >>> ' + \
                 str(datetime.datetime.now()) + '\n'
             task.writelines(s)
             task.close()
@@ -162,37 +169,54 @@ def worker_menu(name):
     if menu == 1:
         print()
         f = open('tasks.txt', 'r')
-        print(f.read())
+        for t in f:
+            if name.upper() in t:
+                print(t, end='')
+        print()
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()
         else:
             print('\nWORKER MENU\n')
             worker_menu(name)
     elif menu == 2:
-        task = open('tasks.txt')
-        print()
-        print(task.read().strip())
-        task.close()
-        print()
-        print('Please type the FIRST WORD of the work to COMPLETE\n')
-        q = input()
+        len_name = len(name)
+        completed = []
         uncompleted = []
-        completed = ['Done by {}: '.format(name.upper())]
-        task = open('tasks.txt')
-        for i in task:
-            if i.split()[0] == q:
-                completed.append(i[:-1])
-                print(completed)
+        task = open('tasks.txt', 'r')
+        print()
+        for k in task:
+            s = ''
+            s += k
+            if name.upper() in k:
+                completed.append(s)
             else:
-                uncompleted.append(i)
+                uncompleted.append(s)
+        print()
+        for qwerty in range(len(completed)):
+            print(qwerty + 1, completed[qwerty], end='')
+        print()
         task.close()
-        completed.append(' >>> at {}\n'.format(datetime.datetime.now()))
-        task = open("tasks.txt", 'w')
-        task.writelines(uncompleted[:])
+        choosing = input('Please choose the work that you want to finish: ')
+        task = open('tasks.txt', 'r', encoding='utf-8')
+        print()
+        perdun = completed[int(choosing) - 1]
+
+        s = 'Done by {} : '.format(
+            name.upper()) + perdun[12 + len_name:-32] + ' >>> at {}\n'.format(datetime.datetime.now())
+        completed.append(s)
+        uncompleted.clear()
+        for k in task:
+            if completed[int(choosing) - 1] != k:
+                uncompleted.append(k)
+        del completed[0:-1]
         task.close()
-        complete = open('completed.txt', 'a')
-        if len(completed) > 2:
-            complete.writelines(completed[:])
+
+        task = open('tasks.txt', 'w', encoding='utf-8')
+        task.writelines(uncompleted)
+        task.close()
+
+        complete = open('completed.txt', 'a', encoding='utf-8')
+        complete.writelines(completed)
         complete.close()
 
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
