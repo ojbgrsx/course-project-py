@@ -33,7 +33,15 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 2:
-
+        mg_task = open("manager_task.txt")
+        print()
+        print(mg_task.read())
+        mg_task.close()
+        mg_t = open("manager_task.txt", 'a+')
+        t = input('Write the name of the case: >>>')
+        t += '\n'
+        mg_t.writelines(t)
+        mg_t.close()
         if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:
@@ -50,8 +58,35 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 4:
+        print('\n1)Show clients in the Sverdlovskiy district')
+        print('2)Show clients in Pervomaiskiy district')
+        print("3)Show clients in Oktyabrskiy district")
+        print("4)Show clients in Leninskiy district\n")
+        client = open('client.txt', 'r')
+        q = int(input())
+        print()
+        if q == 1:
+            for i in client:
+                if 'Sve' in i:
+                    print(i[:-5])
+            client.close()
+        elif q == 2:
+            for i in client:
+                if 'Per' in i:
+                    print(i[:-5])
+            client.close()
+        elif q == 3:
+            for i in client:
+                if 'Okt' in i:
+                    print(i[:-5])
+            client.close()
+        elif q == 4:
+            for i in client:
+                if 'Lns' in i:
+                    print(i[:-5])
+            client.close()
 
-        if input('Any character to continue, (0) to exit: ') == '0':
+        if input('\nAny character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')

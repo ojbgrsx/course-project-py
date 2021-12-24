@@ -29,7 +29,7 @@ def sign_up():
         l.append(s)
         sheet.values().update(spreadsheetId=id, range="worker!A{}".format(
             i), valueInputOption="USER_ENTERED", body={'values': [l]}).execute()
-        print('Congratulations. You have successfully signed in !!! \n')
+        print('Congratulations. You have successfully signed up !!! \n')
         print('Your USERNAME is: ', l[0], '\nYour PASSWORD is: ', l[1], '\n')
     else:
         print('\nThis username is already EXIST, please try another USERNAME\n')

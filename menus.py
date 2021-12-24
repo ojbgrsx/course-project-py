@@ -65,10 +65,14 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 2:
-        task = open('tasks.txt', encoding='utf-8')
-        print()
-        print(task.read())
-        print()
+        mg_task = open("manager_task.txt")
+        mg_task.read()
+        mg_task.close()
+        mg_task = open("manager_task.txt", 'a')
+        t = input('Write the name of the case: >>>')
+        t += '\n'
+        mg_task.append(t)
+        t.close()
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()
         else:
