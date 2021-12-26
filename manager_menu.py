@@ -62,29 +62,21 @@ def manager_menu():
         print('2)Show clients in Pervomaiskiy district')
         print("3)Show clients in Oktyabrskiy district")
         print("4)Show clients in Leninskiy district\n")
-        client = open('client.txt', 'r')
         q = int(input())
-        print()
+        df = pd.read_csv('client.csv', delimiter=',')
+        df.index += 1
         if q == 1:
-            for i in client:
-                if 'Sve' in i:
-                    print(i[:-5])
-            client.close()
+            sver = df[(df['District'] == 'Leninskiy')]
+            print(sver, f'\nAmount: {len(sver)}')
         elif q == 2:
-            for i in client:
-                if 'Per' in i:
-                    print(i[:-5])
-            client.close()
+            per = df[(df['District'] == 'Pervomaiskiy')]
+            print(per, f'\nAmount:{len(per)}')
         elif q == 3:
-            for i in client:
-                if 'Okt' in i:
-                    print(i[:-5])
-            client.close()
+            okt = df[(df['District'] == 'Oktyabrskiy')]
+            print(okt, f'\nAmount:{len(okt)}')
         elif q == 4:
-            for i in client:
-                if 'Lns' in i:
-                    print(i[:-5])
-            client.close()
+            lns = df[(df['District'] == 'Leninskiy')]
+            print(lns, f'\nAmount:{len(lns)}')
 
         if input('\nAny character to continue, (0) to exit: ') == '0':
             print()
@@ -99,13 +91,12 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 6:
-        show_workers = open('workers.txt', encoding="utf-8")
-        print(show_workers.read())
+        show_workers = pd.read_csv('workers.csv')
+        print(show_workers["Name"])
         worker_name = input("Worker\'s name:>>> ").lower()
         s = ''
 
         if worker_name in (i[0] for i in values_worker):
-            show_workers.close()
             worker_task = input("Worker\'s task:>>> ").lower()
             task = open('tasks.txt', 'a', encoding='utf-8')
             s = 'Work for {}'.format(worker_name.upper()) + \
@@ -114,7 +105,6 @@ def manager_menu():
             task.writelines(s)
             task.close()
         else:
-            show_workers.close()
             print('We could not find account with the username {}'.format(
                 worker_name.upper()))
         if input('Any character to continue, (0) to exit: ') == '0':

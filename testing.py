@@ -2,44 +2,50 @@
 # from google_api import *
 # from menus import *
 # from manager_menu import *
-from os import name
+from os import read
+import pandas as pd
 from pprint import pprint
 import csv
 field = []
-name = input('Name: ')
-district = input('District: ')
-instagram = int(input('Instagram budget: '))
-facebook = int(input('Facebook budget: '))
-tiktok = int(input('TikTok budget: '))
-qwerty = [name, district, instagram, facebook, tiktok]
-with open("client.csv") as f:
-    r = csv.reader(f, delimiter="\t")
-    next(r)
-    for row in r:
-        print(row)
-        field.append(row)
-    field.append(qwerty)
-    # pprint(field)
-    # for col in field:
-    #     print(col[1])
-    # with open('client.csv', mode='w') as csv_file:
-    #     csv_writer = csv.writer(csv_file, delimiter=',')
-    #     for i in field:
-    #         i += ''
-    #         print(i)
-    #         csv_writer.writerow(i)
-    # # for row in csv_reader:
-    #     print(row)
-    # print(csv_reader.line_num)
-    #     if line_count == 0:
-    #         print(f'Column names are {", ".join(row)}')
-    #         line_count += 1
-    #     else:
-    #         print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
-    #         line_count += 1
-    # print(f'Processed {line_count} lines.')
+# name = input('Name: ')
+# district = input('District: ')
+# instagram = int(input('Instagram budget: '))
+# facebook = int(input('Facebook budget: '))
+# tiktok = int(input('TikTok budget: '))
+# qwerty = [name, district, instagram, facebook, tiktok]
+# df = pd.read_csv('client.csv', delimiter=',')
+# df.index += 1
+# sver = df.loc[df['District'] == 'Sverdlovskiy']
+# df['Total'] = df['Instagram'] + df['Facebook'] + df['TikTok']
+# print(sver, f'\nAmount: {len(sver)}')
+# print(df.sort_values(['Name']))
+print()
+df = pd.read_csv('workers.csv')
+df.index += 1
 
+#
+##################################
+# pprint(field)
+# for col in field:
+#     print(col[1])
+# with open('client.csv', mode='w') as csv_file:
+#     csv_writer = csv.writer(csv_file, delimiter=',')
+#     for i in field:
+#         i += ''
+#         print(i)
+#         csv_writer.writerow(i)
+# # for row in csv_reader:
+#     print(row)
+# print(csv_reader.line_num)
+#     if line_count == 0:
+#         print(f'Column names are {", ".join(row)}')
+#         line_count += 1
+#     else:
+#         print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
+#         line_count += 1
+# print(f'Processed {line_count} lines.')
 
+############################   FINISHING WORKS FUNCTION     ################
 # name = 'akimaaly'
 # len_name = len(name)
 # completed = []

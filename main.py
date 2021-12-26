@@ -5,13 +5,11 @@ print('   >>> WELCOME  TO OUR COMPANY !!! <<<   ')
 print('\n')
 i = len(values_worker_with_username) + 1
 
-
 # Adding to "workers.txt" refreshed list of workers
-list_of_workers = open("workers.txt", 'w', encoding='utf-8')
-for refreshing in values_worker:
-    s = "|" + refreshing[0] + "|" + '\n'
-    list_of_workers.writelines(s)
-list_of_workers.close()
+
+with open('workers.csv', mode='w') as f:
+    wl = csv.writer(f, delimiter=',')
+    wl.writerows(values_worker_with_username)
 
 # Registration
 

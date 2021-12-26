@@ -2,7 +2,8 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from pprint import pprint
 import datetime
-
+import pandas as pd
+import csv
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SERVICE_ACCOUNT_FILE = 'key.json'
 
@@ -19,7 +20,7 @@ sheet = service.spreadsheets()
 mains = sheet.values().get(spreadsheetId=id, range="mains!A1:B999").execute()
 worker = sheet.values().get(spreadsheetId=id, range="worker!A2:B999").execute()
 worker_with_username = sheet.values().get(
-    spreadsheetId=id, range="worker!A1:B999").execute()
+    spreadsheetId=id, range="worker!A1:C999").execute()
 values_mains = mains.get('values', [])
 values_worker = worker.get('values', [])
 values_worker_with_username = worker_with_username.get('values', [])

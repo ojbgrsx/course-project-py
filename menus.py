@@ -56,24 +56,26 @@ def manager_menu():
         manager_menu()
     elif menu == 1:
         print()
-        show_workers = open('workers.txt', encoding="utf-8")
-        print(show_workers.read())
-        show_workers.close()
-        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+        df = pd.read_csv('workers.csv')
+        df.index += 1
+        print(df['Name'])
+        print()
+        if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 2:
         mg_task = open("manager_task.txt")
-        mg_task.read()
+        print()
+        print(mg_task.read())
         mg_task.close()
-        mg_task = open("manager_task.txt", 'a')
+        mg_t = open("manager_task.txt", 'a+')
         t = input('Write the name of the case: >>>')
         t += '\n'
-        mg_task.append(t)
-        t.close()
-        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+        mg_t.writelines(t)
+        mg_t.close()
+        if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')
@@ -83,34 +85,51 @@ def manager_menu():
         task = open('tasks.txt')
         print(task.read())
         task.close()
-        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+        if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 4:
+        print('\n1)Show clients in the Sverdlovskiy district')
+        print('2)Show clients in Pervomaiskiy district')
+        print("3)Show clients in Oktyabrskiy district")
+        print("4)Show clients in Leninskiy district\n")
+        q = int(input())
+        df = pd.read_csv('client.csv', delimiter=',')
+        df.index += 1
+        if q == 1:
+            sver = df[(df['District'] == 'Leninskiy')]
+            print(sver, f'\n\nAmount of clients in this district: {len(sver)}')
+        elif q == 2:
+            per = df[(df['District'] == 'Pervomaiskiy')]
+            print(per, f'\n\nAmount of clients in this district:{len(per)}')
+        elif q == 3:
+            okt = df[(df['District'] == 'Oktyabrskiy')]
+            print(okt, f'\n\nAmount of clients in this district:{len(okt)}')
+        elif q == 4:
+            lns = df[(df['District'] == 'Leninskiy')]
+            print(lns, f'\n\nAmount of clients in this district:{len(lns)}')
 
-        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+        if input('\nAny character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 5:
 
-        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+        if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 6:
-        print()
-        show_workers = open('workers.txt', encoding="utf-8")
-        print(show_workers.read())
+        show_workers = pd.read_csv('workers.csv')
+        print(show_workers["Name"])
         worker_name = input("Worker\'s name:>>> ").lower()
         s = ''
 
         if worker_name in (i[0] for i in values_worker):
-            show_workers.close()
             worker_task = input("Worker\'s task:>>> ").lower()
             task = open('tasks.txt', 'a', encoding='utf-8')
             s = 'Work for {}'.format(worker_name.upper()) + \
@@ -119,10 +138,9 @@ def manager_menu():
             task.writelines(s)
             task.close()
         else:
-            show_workers.close()
             print('We could not find account with the username {}'.format(
                 worker_name.upper()))
-        if int(input('Any digit to continue, (0) to exit: ')) == 0:
+        if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')
@@ -168,6 +186,7 @@ def worker_menu(name):
     # 4) Показывается текущая зарплата для этого сотрудника из файла “salary.txt”
     print('5) Exit')
     # 5) Выход
+
     menu = int(input(
         ' \nPlease dial the menu number to work with the program, if finished, then dial 5: '))
     if menu == 1:
@@ -242,7 +261,10 @@ def worker_menu(name):
             print('\nWORKER MENU\n')
             worker_menu(name)
     elif menu == 4:
-
+        print()
+        df = pd.read_csv('workers.csv')
+        print(df.loc[df['Name'] == name])
+        print()
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()
         else:
