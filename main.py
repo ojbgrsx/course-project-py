@@ -1,3 +1,4 @@
+from pandas.io.parquet import FastParquetImpl
 from google_api import *
 from menus import *
 print('\n')
@@ -14,7 +15,39 @@ with open('workers.csv', mode='w') as f:
 # Registration
 
 
-def sign_up():
+def sign_up_client():
+    print()
+    name = input('\nName: ')
+    surname = input('Surname: ')
+    district = input('District: ')
+    instagram = int(input('Instagram budget: '))
+    facebook = int(input('Facebook budget: '))
+    tiktok = int(input('TikTok budget: '))
+    print()
+    qwerty = [name, surname, district, instagram, facebook, tiktok]
+    with open('client.csv', mode='a') as csv_write:
+        cs = csv.writer(csv_write, delimiter=',')
+        cs.writerow(qwerty)
+    print('Congratulations. You have successfully signed up as CLIENT !!!\n')
+    df = pd.read_csv('client.csv', delimiter=',')
+    dfd = pd.read_csv("budget.csv")
+    all_bud = df.loc[len(df)-1, 'Instagram'] + df.loc[len(df)-1,
+                                                      'Facebook'] + df.loc[len(df)-1, 'Telegram']
+    ins_bud = all_bud * 25 / 100
+    fac_bud = all_bud * 20 / 100
+    tel_bud = all_bud * 15 / 100
+    wor_bud = all_bud * 40 / 100
+    dfd.loc[0, 'Instagram'] += ins_bud
+    dfd.loc[0, 'Facebook'] += fac_bud
+    dfd.loc[0, 'Telegram'] += tel_bud
+    dfd.loc[0, 'Workers'] += wor_bud
+    dfd.loc[0, 'All'] += all_bud
+    dfd.to_csv('budget.csv', index=False)
+    account()
+
+
+def sign_up_worker():
+    print()
     c = 0
     l = []
     n = input('Username >>> ').strip().lower()
@@ -25,13 +58,14 @@ def sign_up():
         l.append(n)
         s = input('Password >>> ').strip().lower()
         l.append(s)
+        l.append(0)
         sheet.values().update(spreadsheetId=id, range="worker!A{}".format(
             i), valueInputOption="USER_ENTERED", body={'values': [l]}).execute()
-        print('Congratulations. You have successfully signed up !!! \n')
+        print('Congratulations. You have successfully signed up as WORKER !!! \n')
         print('Your USERNAME is: ', l[0], '\nYour PASSWORD is: ', l[1], '\n')
     else:
         print('\nThis username is already EXIST, please try another USERNAME\n')
-        sign_up()
+        sign_up_worker()
 
 # Choosing type of account and signing in
 
@@ -53,6 +87,7 @@ def account():
                         direc_password = input(
                             'Enter password >>> ').lower().strip()
                         if direc_password in sheet.values().get(spreadsheetId=id, range="mains!B2").execute().get('values', [])[0]:
+                            print(' \n YOU ARE WELCOME BOSS !!! \n ')
                             director_menu()
                             break
                         else:
@@ -75,6 +110,7 @@ def account():
                         mana_password = input(
                             'Enter password >>> ').lower().strip()
                         if mana_password in sheet.values().get(spreadsheetId=id, range="mains!B3").execute().get('values', [])[0]:
+                            print(' \n YOU ARE WELCOME MANAGER !!! \n ')
                             manager_menu()
                             break
                         else:
@@ -97,6 +133,7 @@ def account():
                         marketing_password = input(
                             'Enter password >>> ').lower().strip()
                         if marketing_password in sheet.values().get(spreadsheetId=id, range="mains!B4").execute().get('values', [])[0]:
+                            print(' \n YOU ARE WELCOME MARKETER !!! \n ')
                             marketer_menu()
                             break
                         else:
@@ -146,8 +183,21 @@ def account():
                     ' >>> SORRY, BUT WE DID NOT FIND THIS TYPE OF ACCOUNT, PLEASE TRY AGAIN. <<< \n')
                 account()
     elif have == 'no':
-        print('\nThen you should sign up as WORKER\n')
-        sign_up()
+        print('\nThen you should sign up as WORKER or as CLIENT\n')
+        while True:
+            a = int(
+                input('Please choose (1) as WORKER or (2) as CLIENT, (0) to go back : '))
+            if a == 1:
+                sign_up_worker()
+                break
+            elif a == 2:
+                sign_up_client()
+                break
+            elif a == 0:
+                account()
+                break
+            elif a > 2 or a < 0:
+                print('Try again!!!')
     else:
         print('Please try again!!!')
         account()

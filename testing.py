@@ -6,22 +6,47 @@ from os import read
 import pandas as pd
 from pprint import pprint
 import csv
-field = []
-# name = input('Name: ')
-# district = input('District: ')
+l = []
+l.append(0)
+print(l)
+
+
+df = pd.read_csv('workers.csv')
+print(df.iloc[4:5])
+
 # instagram = int(input('Instagram budget: '))
 # facebook = int(input('Facebook budget: '))
 # tiktok = int(input('TikTok budget: '))
-# qwerty = [name, district, instagram, facebook, tiktok]
-# df = pd.read_csv('client.csv', delimiter=',')
+# qwerty = [name, surname, district, instagram, facebook, tiktok]
+# with open('client.csv', mode='a') as csv_write:
+#     cs = csv.writer(csv_write, delimiter=',')
+#     cs.writerow(qwerty)
+
+
+# non_active = 0
+# with open("client.csv") as d:
+#     d = csv.reader(d)
+#     for i in d:
+#         non_active += i.count("0")
+#     print(non_active)
+# print(df.loc[df['Name'] == 'Baiaaly'].loc[df['Instagram'] != 0])
+
+# l = [['Market', 'Workers', 'All']]
+# with open('budget.csv', mode='w') as f:
+#     w = csv.writer(f)
+#     df = pd.read_csv('client.csv')
+#     all_bud = df['Instagram'].sum()+df['Facebook'].sum()+df['Telegram'].sum()
+#     mar_bud = all_bud * 70 / 100
+#     wor_bud = all_bud * 30 / 100
+#     q = [mar_bud] + [wor_bud] + [all_bud]
+#     l.append(q)
+#     w.writerows(l)
+
 # df.index += 1
 # sver = df.loc[df['District'] == 'Sverdlovskiy']
 # df['Total'] = df['Instagram'] + df['Facebook'] + df['TikTok']
 # print(sver, f'\nAmount: {len(sver)}')
 # print(df.sort_values(['Name']))
-print()
-df = pd.read_csv('workers.csv')
-df.index += 1
 
 #
 ##################################
@@ -44,72 +69,3 @@ df.index += 1
 #         print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
 #         line_count += 1
 # print(f'Processed {line_count} lines.')
-
-############################   FINISHING WORKS FUNCTION     ################
-# name = 'akimaaly'
-# len_name = len(name)
-# completed = []
-# uncompleted = []
-# task = open('tasks.txt', 'r')
-# print()
-# for k in task:
-#     s = ''
-#     s += k
-#     if name.upper() in k:
-#         completed.append(s)
-#     else:
-#         uncompleted.append(s)
-# pprint(completed)
-# pprint(uncompleted)
-# print()
-# for qwerty in range(len(completed)):
-#     print(qwerty+1, completed[qwerty], end='')
-# print()
-# task.close()
-# task = open('tasks.txt', 'r', encoding='utf-8')
-# choosing = input('Please choose the work that you want to finish: ')
-# print()
-# perdun = completed[int(choosing)-1]
-
-# s = 'Done by {} : '.format(
-#     name.upper()) + perdun[12+len_name:-32] + ' >>> at {}\n'.format(datetime.datetime.now())
-# completed.append(s)
-# uncompleted.clear()
-# for k in task:
-#     if completed[int(choosing)-1] != k:
-#         uncompleted.append(k)
-# del completed[0:-1]
-# pprint(completed)
-# pprint(uncompleted)
-# task.close()
-
-# task = open('tasks.txt', 'w', encoding='utf-8')
-# task.writelines(uncompleted)
-# task.close()
-
-# complete = open('completed.txt', 'a', encoding='utf-8')
-# complete.writelines(completed)
-# complete.close()
-
-# q = input()
-# uncompleted = []
-# completed = ['Done by {}: '.format(name.upper())]
-
-# for i in :
-#     print(i.split()[2])
-#     if i.split()[2] == name.upper() and splitted[0] == q:
-#         completed.append(i)
-#         print(completed)
-#     else:
-#         uncompleted.append(i)
-
-# completed.append(' >>> at {}\n'.format(datetime.datetime.now()))
-# print(completed)
-# print(uncompleted)
-# task = open("tasks.txt", 'w')
-# task.writelines(uncompleted[:])
-# task.close()
-# complete = open('completed.txt', 'a')
-# if len(completed) > 2:
-#     complete.writelines(completed[:])
-# complete.close()

@@ -4,6 +4,7 @@ from pprint import pprint
 import datetime
 import pandas as pd
 import csv
+
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SERVICE_ACCOUNT_FILE = 'key.json'
 
@@ -24,7 +25,7 @@ worker_with_username = sheet.values().get(
 values_mains = mains.get('values', [])
 values_worker = worker.get('values', [])
 values_worker_with_username = worker_with_username.get('values', [])
-
+##################### DELETING WORKERS #######################
 # def deleting_worker():
 #     which_worker = int(input())
 #     request_body = {
@@ -46,3 +47,31 @@ values_worker_with_username = worker_with_username.get('values', [])
 #         spreadsheetId=id,
 #         body=request_body
 #     ).execute()
+############### REFRESHING BUDGET BY CLIENTS AT THE BEGGINING #########
+# def sign_up_client():
+#     print()
+#     name = input('\nName: ')
+#     surname = input('Surname: ')
+#     district = input('District: ')
+#     instagram = int(input('Instagram budget: '))
+#     facebook = int(input('Facebook budget: '))
+#     tiktok = int(input('TikTok budget: '))
+#     print()
+#     qwerty = [name, surname, district, instagram, facebook, tiktok]
+#     with open('client.csv', mode='a') as csv_write:
+#         cs = csv.writer(csv_write, delimiter=',')
+#         cs.writerow(qwerty)
+#     print('Congratulations. You have successfully signed up as CLIENT !!!\n')
+# df = pd.read_csv('client.csv', delimiter=',')
+# l = [['Instagram', "Facebook", "Telegram", 'Workers', 'All']]
+# with open('budget.csv', mode='w') as f:
+#     w = csv.writer(f)
+#     all_bud = df['Instagram'].sum()+df['Facebook'].sum() + \
+#         df['Telegram'].sum()
+#     ins_bud = all_bud * 25 / 100
+#     fac_bud = all_bud * 20 / 100
+#     tel_bud = all_bud * 15 / 100
+#     wor_bud = all_bud * 40 / 100
+#     q = [ins_bud] + [fac_bud] + [tel_bud] + [wor_bud] + [all_bud]
+#     l.append(q)
+#     w.writerows(l)

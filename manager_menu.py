@@ -1,8 +1,16 @@
 from google_api import *
+from main import account
+df = pd.read_csv('client.csv', delimiter=',')
+all_bud = df['Instagram'].sum()+df['Facebook'].sum() + \
+    df['Telegram'].sum()
+ins_bud = all_bud * 25 / 100
+fac_bud = all_bud * 20 / 100
+tel_bud = all_bud * 15 / 100
+wor_bud = all_bud * 40 / 100
 
 
 def manager_menu():
-    print(' \n YOU ARE WELCOME MANAGER !!! \n ')
+    df = pd.read_csv('client.csv', delimiter=',')
     print('1) Show list of employees ')
     print('2) Show to-do list ')
     # 2) Показывает список всех дел, которую необходимо выполнить
@@ -24,9 +32,10 @@ def manager_menu():
         manager_menu()
     elif menu == 1:
         print()
-        show_workers = open('workers.txt', encoding="utf-8")
-        print(show_workers.read())
-        show_workers.close()
+        df = pd.read_csv('workers.csv')
+        df.index += 1
+        print(df['Name'])
+        print()
         if input('Any character to continue, (0) to exit: ') == '0':
             print()
         else:
@@ -58,25 +67,27 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 4:
+        print()
         print('\n1)Show clients in the Sverdlovskiy district')
         print('2)Show clients in Pervomaiskiy district')
         print("3)Show clients in Oktyabrskiy district")
         print("4)Show clients in Leninskiy district\n")
-        q = int(input())
-        df = pd.read_csv('client.csv', delimiter=',')
+        print(f'Amount of all clients is: {len(df)}\n')
+        q = int(input('\nPlease choose: '))
+        print()
         df.index += 1
         if q == 1:
-            sver = df[(df['District'] == 'Leninskiy')]
-            print(sver, f'\nAmount: {len(sver)}')
+            sver = df[(df['District'] == 'sverdlovskiy')]
+            print(sver, f'\n\nAmount of clients in this district: {len(sver)}')
         elif q == 2:
-            per = df[(df['District'] == 'Pervomaiskiy')]
-            print(per, f'\nAmount:{len(per)}')
+            per = df[(df['District'] == 'pervomaiskiy')]
+            print(per, f'\n\nAmount of clients in this district: {len(per)}')
         elif q == 3:
-            okt = df[(df['District'] == 'Oktyabrskiy')]
-            print(okt, f'\nAmount:{len(okt)}')
+            okt = df[(df['District'] == 'oktyabrskiy')]
+            print(okt, f'\n\nAmount of clients in this district: {len(okt)}')
         elif q == 4:
-            lns = df[(df['District'] == 'Leninskiy')]
-            print(lns, f'\nAmount:{len(lns)}')
+            lns = df[(df['District'] == 'leninskiy')]
+            print(lns, f'\n\nAmount of clients in this district: {len(lns)}')
 
         if input('\nAny character to continue, (0) to exit: ') == '0':
             print()
@@ -84,8 +95,33 @@ def manager_menu():
             print('\nMANAGER MENU\n')
             manager_menu()
     elif menu == 5:
-
-        if input('Any character to continue, (0) to exit: ') == '0':
+        print()
+        print('1) The total contribution of all clients')
+        print('2) Average contribution of all clients')
+        print('3) Calculate the total income from the search for clients:')
+        q = int(input('\nChoose the option: '))
+        if q == 1:
+            print('\nThe total contribution of all clients is: ', all_bud)
+        elif q == 2:
+            print('\nAverage income of all clients is : ', all_bud / len(df))
+        elif q == 3:
+            print(df)
+            name = input(
+                '\nEnter the name of the person to calculate the total and average contribution >>> ')
+            print()
+            non_active = 0
+            with open("client.csv") as d:
+                d = csv.reader(d)
+                for i in d:
+                    if name in i:
+                        non_active += i.count("0")
+            df['Total'] = df.iloc[:, 3:7].sum(axis=1)
+            df['Average'] = round(
+                (df.iloc[:, 3:7].sum(axis=1)/(3-non_active)))
+            print(df.loc[df['Name'] == name]
+                  [['Name', 'Surname', 'District', 'Total', 'Average']])
+            print()
+        if input('\nAny character to continue, (0) to exit: ') == '0':
             print()
         else:
             print('\nMANAGER MENU\n')
@@ -114,6 +150,3 @@ def manager_menu():
             manager_menu()
     elif menu == 7:
         print(' \nThe program is over, we look forward to your return! \n ')
-
-
-manager_menu()

@@ -47,29 +47,32 @@ def worker_menu(name):
             print(qwerty + 1, completed[qwerty], end='')
         print()
         task.close()
-        choosing = input('Please choose the work that you want to finish: ')
-        task = open('tasks.txt', 'r', encoding='utf-8')
-        print()
-        perdun = completed[int(choosing) - 1]
+        choosing = input(
+            'Please choose the work that you want to finish, (0) or ENTER to exit: ')
+        if choosing != '0' and choosing != '':
+            task = open('tasks.txt', 'r', encoding='utf-8')
+            print()
+            perdun = completed[int(choosing) - 1]
 
-        s = 'Done by {} : '.format(
-            name.upper()) + perdun[12 + len_name:-32] + ' >>> at {}\n'.format(datetime.datetime.now())
-        completed.append(s)
-        uncompleted.clear()
-        for k in task:
-            if completed[int(choosing) - 1] != k:
-                uncompleted.append(k)
-        del completed[0:-1]
-        task.close()
+            s = 'Done by {} : '.format(
+                name.upper()) + perdun[12 + len_name:-32] + ' >>> at {}\n'.format(datetime.datetime.now())
+            completed.append(s)
+            uncompleted.clear()
+            for k in task:
+                if completed[int(choosing) - 1] != k:
+                    uncompleted.append(k)
+            del completed[0:-1]
+            task.close()
 
-        task = open('tasks.txt', 'w', encoding='utf-8')
-        task.writelines(uncompleted)
-        task.close()
+            task = open('tasks.txt', 'w', encoding='utf-8')
+            task.writelines(uncompleted)
+            task.close()
 
-        complete = open('completed.txt', 'a', encoding='utf-8')
-        complete.writelines(completed)
-        complete.close()
-
+            complete = open('completed.txt', 'a', encoding='utf-8')
+            complete.writelines(completed)
+            complete.close()
+        else:
+            pass
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()
         else:
@@ -105,6 +108,3 @@ def worker_menu(name):
         worker_menu(name)
     elif menu == 5:
         print(' \nThe program is over, we look forward to your return! \n ')
-
-
-worker_menu(input())
