@@ -1,5 +1,4 @@
 from google_api import *
-# from main import account
 i = len(values_worker_with_username) + 1
 df = pd.read_csv('client.csv', delimiter=',')
 all_bud = df['Instagram'].sum()+df['Facebook'].sum() + \
@@ -144,8 +143,6 @@ def director_menu():
         print(' \n >>> YOU ENTER A NUMBER THAT IS NOT IN THE MENU, PLEASE TRY AGAIN!!! <<< \n ')
         director_menu()
     elif menu == 8:
-        account()
-    elif menu == 9:
         print(' \nThe program is over, we look forward to your return! \n ')
 
 ######## MANAGER MENU ########
@@ -420,8 +417,7 @@ def worker_menu(name):
     # 3) Показывает список завершенных дел для этого сотрудника из файла “completed-tasks.txt”
     print('4) Show salary ')
     # 4) Показывается текущая зарплата для этого сотрудника из файла “salary.txt”
-    print('5) T')
-    print('6) Exit')
+    print('5) Exit')
     # 5) Выход
 
     menu = int(input(
@@ -505,7 +501,8 @@ def worker_menu(name):
         df = pd.read_csv('workers.csv')
         df.index += 1
         col = list(df.columns.values)
-        print(df[[col[0]] + [col[2]]].loc[df['Name'] == name])
+        sal = df[col[2]].loc[df['Name'] == name]
+        print('Your salary is: {}'.format(sal.iloc[0]))
         print()
         if int(input('Any digit to continue, (0) to exit: ')) == 0:
             print()

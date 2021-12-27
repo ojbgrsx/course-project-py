@@ -1,3 +1,4 @@
+import googleapiclient
 from pandas.io.parquet import FastParquetImpl
 from google_api import *
 from menus import *
@@ -12,7 +13,7 @@ with open('workers.csv', mode='w') as f:
     wl = csv.writer(f, delimiter=',')
     wl.writerows(values_worker_with_username)
 
-# Registration
+# REGISTRTION OF CLIENT
 
 
 def sign_up_client():
@@ -44,6 +45,8 @@ def sign_up_client():
     dfd.loc[0, 'All'] += all_bud
     dfd.to_csv('budget.csv', index=False)
     account()
+
+# REGISTRATION OF WORKER
 
 
 def sign_up_worker():
@@ -204,3 +207,15 @@ def account():
 
 
 account()
+
+############## SAVING ACCOUNTS WTIH THEIR INCREASED OR DECREASED SALARY TO GOOGLE SHEET ###############
+
+googlea = []
+with open('workers.csv') as f:
+    qwerty = csv.reader(f)
+    for i in qwerty:
+        if len(i) > 0:
+            googlea.append(i)
+    print(googlea)
+sheet.values().update(spreadsheetId=id, range="worker!A1:C",
+                      valueInputOption="USER_ENTERED", body={'values': googlea}).execute()
