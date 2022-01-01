@@ -1,9 +1,7 @@
-import googleapiclient
-from pandas.io.parquet import FastParquetImpl
 from google_api import *
 from menus import *
 print('\n')
-print('   >>> WELCOME  TO OUR COMPANY !!! <<<   ')
+print('   >>> WELCOME  TO OUR ORGANIZATION !!! <<<   ')
 print('\n')
 i = len(values_worker_with_username) + 1
 
@@ -23,9 +21,9 @@ def sign_up_client():
     district = input('District: ')
     instagram = int(input('Instagram budget: '))
     facebook = int(input('Facebook budget: '))
-    tiktok = int(input('TikTok budget: '))
+    telegram = int(input('Telegram budget: '))
     print()
-    qwerty = [name, surname, district, instagram, facebook, tiktok]
+    qwerty = [name, surname, district, instagram, facebook, telegram]
     with open('client.csv', mode='a') as csv_write:
         cs = csv.writer(csv_write, delimiter=',')
         cs.writerow(qwerty)
@@ -78,8 +76,8 @@ def account():
     have = input('Do you have an account ? (yes/no) >>> ').lower().strip()
     print()
     if have == 'yes':
-        print('Please choose type of your account: \n\n 1)Director \n 2)Manager \n 3)Marketing \n 4)Worker \n')
-        a = int(input('Please enter a number (1-4) to log in, (0) to exit >>> '))
+        print('Please choose type of your account: \n\n 1)Director \n 2)Manager \n 3)Marketing \n 4)Worker \n 5)Client \n')
+        a = int(input('Please enter a number (1-5) to log in, (0) to exit >>> '))
         print('')
         if a == 1:
             print(' YOU ARE IN DIRECTOR ACCOUNT! \n')
@@ -180,6 +178,42 @@ def account():
                         print('Try again!!!\n')
                     else:
                         print('\nYou have wasted all username attempts!!!')
+        elif a == 5:
+            with open('client.csv') as f:
+                df = pd.read_csv('client.csv')
+                reading = csv.reader(f)
+                names = []
+                surnames = []
+                for i in reading:
+                    if i[0] != 'Name':
+                        names.append(i[0])
+                        surnames.append(i[1])
+                print('YOU ARE IN CLIENT MENU! \n')
+                for z in range(3):
+                    name = input('Enter name >>> ').lower().strip()
+                    if name in names:
+                        for j in range(3):
+                            surname = input(
+                                'Enter surname >>> ').lower().strip()
+                            if surname in surnames:
+                                print()
+                                print(df[(df['Name'] == name)])
+                                print()
+                                account()
+                                break
+                            else:
+                                if j != 2:
+                                    print('\nWrong surname')
+                                    print('Try again!!!\n')
+                                else:
+                                    print(
+                                        '\nYou have wasted all surname attempts!!!')
+                        break
+                    elif z != 2:
+                        print('\nWe have not find account with this name!!!')
+                        print('Try again!!!\n')
+                    else:
+                        print('\nYou have wasted all name attempts!!!')
         else:
             if a != 0:
                 print(
@@ -216,6 +250,5 @@ with open('workers.csv') as f:
     for i in qwerty:
         if len(i) > 0:
             googlea.append(i)
-    print(googlea)
 sheet.values().update(spreadsheetId=id, range="worker!A1:C",
                       valueInputOption="USER_ENTERED", body={'values': googlea}).execute()

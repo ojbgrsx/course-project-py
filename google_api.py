@@ -4,18 +4,13 @@ from pprint import pprint
 import datetime
 import pandas as pd
 import csv
-
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SERVICE_ACCOUNT_FILE = 'key.json'
-
 creds = None
 creds = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-# The ID and range of a sample spreadsheet.
 id = '1cTg4QyIFSBJeQjuXk8dgJTTMpyGtzIPvkdz5Sd0wyhM'
 service = build('sheets', 'v4', credentials=creds)
-# sheet_id = 1921119551
 # Call the Sheets API
 sheet = service.spreadsheets()
 mains = sheet.values().get(spreadsheetId=id, range="mains!A1:B999").execute()
