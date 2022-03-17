@@ -64,6 +64,7 @@ public class Main {
 
     private static void worker_account() {
         int i = 0;
+
         if (i == 0) {
             Scanner scanWOR = new Scanner(System.in);
             String selectedNum = "";
